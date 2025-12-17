@@ -2,28 +2,27 @@
 	<div id="app">
 		<header class="app-header">
 			<div class="header-content">
-				<h1>Генератор цветовых палитр</h1>
-				<p>Создание, управление и экспорт</p>
+				<h1>ColorPalette</h1>
 			</div>
-            <nav class="main-nav">
-                <router-link to="/" class="nav-link">Генератор</router-link>
-                <router-link to="/library" class="nav-link">Библиотека палитр</router-link>
-            </nav>
+			<nav class="main-nav">
+				<router-link to="/" class="nav-link">Генератор</router-link>
+				<router-link to="/library" class="nav-link"
+					>Библиотека палитр</router-link
+				>
+			</nav>
 		</header>
 
 		<main class="main-content">
 			<router-view />
 		</main>
 
-		<footer class="app-footer">
-			<p>&copy; 2025 Vue 3 Color Palette Generator</p>
-		</footer>
+		<footer class="app-footer"></footer>
 	</div>
 </template>
 
 <script>
-import { onMounted, provide, ref, watch } from 'vue'
 import tinycolor from 'tinycolor2'
+import { onMounted, provide, ref, watch } from 'vue'
 
 export default {
 	name: 'App',
@@ -112,7 +111,11 @@ body {
 
 /* Cтили шапки */
 .app-header {
-	background: linear-gradient(135deg, #4a00e0 0%, #8e2de2 100%); /* Deeper, more vibrant gradient */
+	background: linear-gradient(
+		135deg,
+		#4a00e0 0%,
+		#8e2de2 100%
+	); /* Deeper, more vibrant gradient */
 	color: white;
 	padding: 1.5rem 1rem; /* Adjusted padding */
 	text-align: center;
@@ -133,24 +136,24 @@ body {
 }
 
 .main-nav {
-    margin-top: 0.5rem; /* Adjusted margin */
+	margin-top: 0.5rem; /* Adjusted margin */
 }
 
 .nav-link {
-    color: rgba(255, 255, 255, 0.8); /* Slightly less bright default color */
-    text-decoration: none;
-    margin: 0 15px;
-    font-size: 1.05rem; /* Adjusted font size */
-    padding-bottom: 5px;
-    transition: all 0.3s ease;
-    font-weight: 500;
+	color: rgba(255, 255, 255, 0.8); /* Slightly less bright default color */
+	text-decoration: none;
+	margin: 0 15px;
+	font-size: 1.05rem; /* Adjusted font size */
+	padding-bottom: 5px;
+	transition: all 0.3s ease;
+	font-weight: 500;
 }
 
-.nav-link:hover, .nav-link.router-link-active {
-    color: white; /* Brighten on hover/active */
-    border-bottom: 2px solid white;
+.nav-link:hover,
+.nav-link.router-link-active {
+	color: white; /* Brighten on hover/active */
+	border-bottom: 2px solid white;
 }
-
 
 /* Основное содержимое */
 .main-content {
@@ -173,21 +176,21 @@ body {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    .app-header {
-        padding: 1rem 0.5rem;
-    }
-    .header-content h1 {
-        font-size: 1.8rem;
-    }
-    .header-content p {
-        font-size: 0.9em;
-    }
-    .nav-link {
-        margin: 0 10px;
-        font-size: 1em;
-    }
-    .main-content {
-        padding: 1.5rem 0.5rem;
-    }
+	.app-header {
+		padding: 1rem 0.5rem;
+	}
+	.header-content h1 {
+		font-size: 1.8rem;
+	}
+	.header-content p {
+		font-size: 0.9em;
+	}
+	.nav-link {
+		margin: 0 10px;
+		font-size: 1em;
+	}
+	.main-content {
+		padding: 1.5rem 0.5rem;
+	}
 }
 </style>

@@ -3,13 +3,12 @@
 		<h2>Генератор цветовых палитр</h2>
 
 		<div class="controls">
-			<button @click="generateRandomPalette" class="generate-button primary-button">
+			<button
+				@click="generateRandomPalette"
+				class="generate-button primary-button"
+			>
 				Случайная палитра
 			</button>
-
-			<router-link to="/library" class="generate-button secondary-button"
-				>Загрузить из библиотеки</router-link
-			>
 
 			<div class="settings-group">
 				<label for="base-color" class="setting-label">Базовый цвет:</label>
@@ -27,18 +26,12 @@
 					<option value="triadic">Триада</option>
 					<option value="complementary">Комплементарная</option>
 				</select>
-			</div>
-
-			<div class="settings-group">
-				<label for="palette-mood" class="setting-label"
-					>Настроение палитры:</label
+				<button
+					@click="generatePaletteFromBase"
+					class="generate-button secondary-button"
 				>
-				<select id="palette-mood" v-model="paletteMood" class="setting-select">
-					<option value="none">Нет</option>
-					<option value="calm">Спокойные</option>
-					<option value="energetic">Энергичные</option>
-					<option value="professional">Профессиональные</option>
-				</select>
+					Сгенерировать по базе
+				</button>
 			</div>
 
 			<div class="settings-group">
@@ -96,141 +89,29 @@
 
 		<div class="preview">
 			<h3>Превью</h3>
-			<div class="preview-layout" :style="{ '--preview-bg': previewBg }">
+			<div class="preview-content" :style="{ backgroundColor: previewBg }">
+				<h4 :style="{ color: palette[0]?.hex }">Заголовок</h4>
+				<p :style="{ color: palette[1]?.hex }">
+					Это пример текста, использующего цвета из вашей палитры.
+				</p>
 				<div
-					class="preview-sidebar"
+					class="preview-card"
 					:style="{
-						backgroundColor: palette[0]?.hex,
-						color: getContrastColor(palette[0]?.hex),
+						backgroundColor: palette[2]?.hex,
+						color: getContrastColor(palette[2]?.hex),
 					}"
 				>
-					<div class="preview-sidebar-header">
-						<svg
-							class="preview-icon"
-							viewBox="0 0 24 24"
-							:fill="getContrastColor(palette[0]?.hex)"
-						>
-							<path
-								d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
-							/>
-						</svg>
-						<span>AppName</span>
-					</div>
-					<ul class="preview-nav">
-						<li
-							:style="{
-								backgroundColor: palette[1]
-									? tinycolor(palette[1].hex).darken(10).toHexString()
-									: '',
-							}"
-						>
-							<svg
-								class="preview-icon"
-								viewBox="0 0 24 24"
-								:fill="getContrastColor(palette[1]?.hex)"
-							>
-								<path
-									d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"
-								/>
-							</svg>
-							<span>Dashboard</span>
-						</li>
-						<li>
-							<svg
-								class="preview-icon"
-								viewBox="0 0 24 24"
-								:fill="getContrastColor(palette[0]?.hex)"
-							>
-								<path
-									d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
-								/>
-							</svg>
-							<span>Profile</span>
-						</li>
-						<li>
-							<svg
-								class="preview-icon"
-								viewBox="0 0 24 24"
-								:fill="getContrastColor(palette[0]?.hex)"
-							>
-								<path
-									d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"
-								/>
-							</svg>
-							<span>Settings</span>
-						</li>
-					</ul>
+					Карточка
 				</div>
-				<div class="preview-main">
-					<div
-						class="preview-header"
-						:style="{
-							backgroundColor: palette[1]?.hex,
-							color: getContrastColor(palette[1]?.hex),
-						}"
-					>
-						<h2>Dashboard</h2>
-						<button
-							class="preview-button"
-							:style="{
-								backgroundColor: palette[2]?.hex,
-								color: getContrastColor(palette[2]?.hex),
-							}"
-						>
-							New Report
-						</button>
-					</div>
-					<div class="preview-content-grid">
-						<div
-							class="preview-content-card"
-							:style="{
-								backgroundColor: palette[3]
-									? tinycolor(palette[3].hex).setAlpha(0.2).toRgbString()
-									: '',
-								borderColor: palette[3]?.hex,
-							}"
-						>
-							<h4 :style="{ color: palette[0]?.hex }">Sales</h4>
-							<p :style="{ color: palette[1]?.hex }">1,234 units</p>
-							<div
-								class="preview-progress-bar"
-								:style="{ backgroundColor: palette[3]?.hex }"
-							></div>
-						</div>
-						<div
-							class="preview-content-card"
-							:style="{
-								backgroundColor: palette[4]
-									? tinycolor(palette[4].hex).setAlpha(0.2).toRgbString()
-									: '',
-								borderColor: palette[4]?.hex,
-							}"
-						>
-							<h4 :style="{ color: palette[0]?.hex }">Revenue</h4>
-							<p :style="{ color: palette[1]?.hex }">$12,345</p>
-							<div
-								class="preview-progress-bar"
-								:style="{ backgroundColor: palette[4]?.hex }"
-							></div>
-						</div>
-						<div
-							class="preview-content-card"
-							:style="{
-								backgroundColor: palette[2]
-									? tinycolor(palette[2].hex).setAlpha(0.2).toRgbString()
-									: '',
-								borderColor: palette[2]?.hex,
-							}"
-						>
-							<h4 :style="{ color: palette[0]?.hex }">Users</h4>
-							<p :style="{ color: palette[1]?.hex }">567</p>
-							<div
-								class="preview-progress-bar"
-								:style="{ backgroundColor: palette[2]?.hex }"
-							></div>
-						</div>
-					</div>
-				</div>
+				<button
+					class="preview-button"
+					:style="{
+						backgroundColor: palette[3]?.hex,
+						color: getContrastColor(palette[3]?.hex),
+					}"
+				>
+					Кнопка
+				</button>
 			</div>
 			<div class="preview-controls">
 				<button @click="previewBg = '#ffffff'" class="preview-bg-button">
@@ -242,62 +123,53 @@
 			</div>
 		</div>
 
-		<div class="analysis-container">
-			<div class="accessibility-section">
-				<h3>Анализ доступности (WCAG)</h3>
-				<div class="accessibility-grid">
+		<div class="accessibility-section">
+			<h3>Анализ доступности (WCAG)</h3>
+			<div class="accessibility-grid">
+				<div
+					v-for="(color, index) in palette"
+					:key="`wcag-${index}`"
+					class="accessibility-card"
+				>
 					<div
-						v-for="(color, index) in palette"
-						:key="`wcag-${index}`"
-						class="accessibility-card"
-					>
-						<div
-							class="color-swatch"
-							:style="{ backgroundColor: color.hex }"
-						></div>
-						<div class="color-details">
-							<h4>{{ displayColor(color) }}</h4>
-							<div class="contrast-info">
-								<p>На светлом фоне (#FFFFFF):</p>
-								<span
-									>Контраст:
-									{{
-										getContrastRatio(color.hex, '#FFFFFF').toFixed(2)
-									}}</span
-								>
-								<span :class="getAccessibilityClass(color.hex, '#FFFFFF')">{{
-									getAccessibilityLevel(color.hex, '#FFFFFF')
-								}}</span>
-							</div>
-							<div class="contrast-info">
-								<p>На темном фоне (#000000):</p>
-								<span
-									>Контраст:
-									{{
-										getContrastRatio(color.hex, '#000000').toFixed(2)
-									}}</span
-								>
-								<span :class="getAccessibilityClass(color.hex, '#000000')">{{
-									getAccessibilityLevel(color.hex, '#000000')
-								}}</span>
-							</div>
-							<div class="contrast-info" v-if="previewBg">
-								<p>На фоне превью ({{ previewBg.toUpperCase() }}):</p>
-								<span
-									>Контраст:
-									{{
-										getContrastRatio(color.hex, previewBg).toFixed(2)
-									}}</span
-								>
-								<span :class="getAccessibilityClass(color.hex, previewBg)">{{
-									getAccessibilityLevel(color.hex, previewBg)
-								}}</span>
-							</div>
+						class="color-swatch"
+						:style="{ backgroundColor: color.hex }"
+					></div>
+					<div class="color-details">
+						<h4>{{ displayColor(color) }}</h4>
+						<div class="contrast-info">
+							<p>На светлом фоне (#FFFFFF):</p>
+							<span
+								>Контраст:
+								{{ getContrastRatio(color.hex, '#FFFFFF').toFixed(2) }}</span
+							>
+							<span :class="getAccessibilityClass(color.hex, '#FFFFFF')">{{
+								getAccessibilityLevel(color.hex, '#FFFFFF')
+							}}</span>
+						</div>
+						<div class="contrast-info">
+							<p>На темном фоне (#000000):</p>
+							<span
+								>Контраст:
+								{{ getContrastRatio(color.hex, '#000000').toFixed(2) }}</span
+							>
+							<span :class="getAccessibilityClass(color.hex, '#000000')">{{
+								getAccessibilityLevel(color.hex, '#000000')
+							}}</span>
+						</div>
+						<div class="contrast-info" v-if="previewBg">
+							<p>На фоне превью ({{ previewBg.toUpperCase() }}):</p>
+							<span
+								>Контраст:
+								{{ getContrastRatio(color.hex, previewBg).toFixed(2) }}</span
+							>
+							<span :class="getAccessibilityClass(color.hex, previewBg)">{{
+								getAccessibilityLevel(color.hex, previewBg)
+							}}</span>
 						</div>
 					</div>
 				</div>
 			</div>
-			<ColorWheel :palette="palette" />
 		</div>
 
 		<div class="export-section">
@@ -310,12 +182,6 @@
 				</select>
 				<button @click="copyExportCode" class="generate-button primary-button">
 					Копировать код
-				</button>
-				<button
-					@click="sharePalette"
-					class="generate-button secondary-button"
-				>
-					Поделиться
 				</button>
 			</div>
 			<pre
@@ -338,25 +204,21 @@
 <script>
 import tinycolor from 'tinycolor2'
 import { computed, inject, onMounted, ref, watch } from 'vue'
-import ColorWheel from './ColorWheel.vue'
 
 export default {
 	name: 'ColorPaletteGenerator',
-	components: {
-		ColorWheel,
-	},
 	setup(props, { emit }) {
-		const palette = inject('currentPalette')
-		const setPalette = inject('setPalette')
-		const numColors = ref(3)
+		const palette = ref([])
+		const numColors = ref(5)
 		const colorFormat = ref('hex')
 		const previewBg = ref('#ffffff')
 		const notification = ref({ visible: false, message: '', type: 'success' })
 
 		const baseColor = ref('#3498db') // Default blue for base generation
 		const paletteType = ref('analogous') // Default palette type
-		const paletteMood = ref('none')
 		const exportFormat = ref('css') // Default export format
+
+		const injectedSetPalette = inject('setPalette') // Inject the setPalette function
 
 		// Helper to determine contrasting text color (black or white)
 		const getContrastColor = hexcolor => {
@@ -391,98 +253,94 @@ export default {
 			return tinycolor.random().toHexString()
 		}
 
-		const generatePaletteFromBase = (base) => {
+		const generatePaletteFromBase = () => {
+			// Ensure numColors is at least 1
 			if (numColors.value < 1) {
 				numColors.value = 1
 			}
-			const tcBaseColor = tinycolor(base || baseColor.value)
-			let generatedColors = []
 
-			switch (paletteType.value) {
-				case 'monochromatic':
-					generatedColors = tcBaseColor.monochromatic(numColors.value)
-					break
-				case 'analogous':
-					generatedColors = tcBaseColor.analogous(numColors.value)
-					break
-				case 'triadic':
-					generatedColors = tcBaseColor.triad()
-					// If more colors are requested, derive them from the triadic base
-					while (generatedColors.length < numColors.value) {
-						generatedColors.push(
-							generatedColors[generatedColors.length % 3].lighten(10)
-						)
+			const tcBaseColor = tinycolor(baseColor.value)
+			let newColors = []
+
+			// Add locked colors first
+			const lockedColors = palette.value
+				.filter(c => c.locked && c.hex)
+				.map(c => c.hex)
+
+			// Generate colors based on paletteType
+			if (paletteType.value === 'monochromatic') {
+				newColors = tcBaseColor.monochromatic(numColors.value)
+			} else if (paletteType.value === 'analogous') {
+				newColors = tcBaseColor.analogous(numColors.value)
+			} else if (paletteType.value === 'triadic') {
+				newColors = tcBaseColor.triad() // triad always returns 3 colors
+				if (numColors.value > 3) {
+					// Generate additional colors by slightly modifying existing ones
+					for (let i = 0; i < numColors.value - 3; i++) {
+						newColors.push(newColors[i % 3].lighten(10 * (i + 1)))
 					}
-					break
-				case 'complementary':
-					// complementary often gives 2 colors, splitcomplementary gives 3-4
-					// We'll start with complement and splitcomplement to get more base variety
-					let baseComplementary = [
-						tcBaseColor,
-						tcBaseColor.complement(),
-						...tcBaseColor.splitcomplement(),
-					]
-					// Ensure unique base colors and take up to 4
-					baseComplementary = Array.from(
-						new Set(baseComplementary.map(c => c.toHexString()))
-					).map(hex => tinycolor(hex))
-
-					generatedColors = baseComplementary.slice(0, numColors.value)
-
-					// If more colors are requested, derive them
-					while (generatedColors.length < numColors.value) {
-						const lastColor =
-							generatedColors[generatedColors.length % baseComplementary.length]
-						generatedColors.push(lastColor.darken(10)) // Alternate between lighten/darken
+				}
+			} else if (paletteType.value === 'complementary') {
+				newColors = tcBaseColor.complement().splitcomplement() // Start with complement and split complement
+				if (numColors.value > 2) {
+					// Generate additional colors by slightly modifying existing ones
+					for (let i = 0; i < numColors.value - 2; i++) {
+						newColors.push(newColors[i % 2].darken(10 * (i + 1)))
 					}
-					break
-				default:
-					generatedColors = tcBaseColor.monochromatic(numColors.value)
-					break
+				}
+			} else {
+				// Default to monochromatic if type is unknown or not handled
+				newColors = tcBaseColor.monochromatic(numColors.value)
 			}
 
-			const finalPalette = generatedColors
-				.slice(0, numColors.value)
-				.map((tc, index) => {
-					const existingColor = palette.value[index]
-					const color = tinycolor(tc)
-					if (existingColor && existingColor.locked) {
-						return existingColor
-					}
-					return {
-						hex: color.toHexString(),
-						hsl: color.toHsl(),
-						locked: false,
-					}
-				})
+			newColors = newColors.map(tc => ({
+				hex: tc.toHexString(),
+				locked: false,
+			}))
 
-			setPalette(finalPalette)
-		}
-
-		const generatePaletteFromMood = () => {
-			const moodColors = {
-				calm: ['#6a8d92', '#a0c1b8', '#dadedf', '#f2e8c4', '#f5b461'],
-				energetic: ['#ff4e50', '#fcab10', '#f8b400', '#f4d35e', '#a8d0e6'],
-				professional: ['#2c3e50', '#34495e', '#95a5a6', '#bdc3c7', '#ecf0f1'],
+			// Ensure the number of generated colors matches numColors
+			while (newColors.length < numColors.value) {
+				newColors.push({ hex: tcBaseColor.toHexString(), locked: false }) // Fill with base color if not enough generated
 			}
+			newColors = newColors.slice(0, numColors.value)
 
-			if (paletteMood.value in moodColors) {
-				const moodBaseColors = moodColors[paletteMood.value]
-				baseColor.value =
-					moodBaseColors[Math.floor(Math.random() * moodBaseColors.length)]
+			// Combine locked colors with newly generated ones
+			let finalPalette = []
+			for (let i = 0; i < numColors.value; i++) {
+				if (
+					palette.value[i]?.locked &&
+					lockedColors.includes(palette.value[i].hex)
+				) {
+					finalPalette.push(palette.value[i])
+				} else {
+					finalPalette.push(
+						newColors.shift() || {
+							hex: tcBaseColor.toHexString(),
+							locked: false,
+						}
+					)
+				}
 			}
+			palette.value = finalPalette
+
+			// Re-apply locked status for colors that were originally locked and are still in the palette
+			palette.value.forEach((color, index) => {
+				if (lockedColors.includes(color.hex)) {
+					color.locked = true
+				}
+			})
+			injectedSetPalette(palette.value) // Use injected setPalette
 		}
 
 		const generateRandomPalette = () => {
-			const randomColor = generateRandomHexColor()
-			baseColor.value = randomColor
+			baseColor.value = generateRandomHexColor()
+			generatePaletteFromBase()
 		}
 
 		const toggleLock = index => {
 			if (palette.value[index]) {
-				const newPalette = [...palette.value]
-				newPalette[index].locked = !newPalette[index].locked
-				setPalette(newPalette)
+				palette.value[index].locked = !palette.value[index].locked
+				injectedSetPalette(palette.value) // Use injected setPalette
 			}
 		}
 
@@ -516,11 +374,11 @@ export default {
 			}
 		}
 
-		const sharePalette = () => {
-			const colors = palette.value.map(c => c.hex.substring(1)).join(',')
-			const url = `${window.location.origin}?palette=${colors}`
-			copyToClipboard(url)
-			showNotification('Ссылка на палитру скопирована в буфер обмена')
+		// Expose method to set palette from external source
+		const setPalette = newPaletteData => {
+			palette.value = newPaletteData
+			numColors.value = newPaletteData.length // Update numColors based on loaded palette
+			injectedSetPalette(palette.value) // Update the global state when an external palette is loaded
 		}
 
 		// Export Logic
@@ -586,10 +444,6 @@ export default {
 			generatePaletteFromBase()
 		})
 
-		watch(paletteMood, () => {
-			generatePaletteFromMood()
-		})
-
 		watch(numColors, (newVal, oldVal) => {
 			if (newVal !== oldVal) {
 				// Re-evaluate the palette based on the new number of colors
@@ -597,9 +451,45 @@ export default {
 			}
 		})
 
+		watch(
+			palette,
+			newPalette => {
+				localStorage.setItem('palette', JSON.stringify(newPalette))
+				injectedSetPalette(newPalette) // Ensure global state is updated on any palette change
+			},
+			{ deep: true, immediate: true }
+		) // immediate to emit initial palette
+
 		onMounted(() => {
-			if (!palette.value || palette.value.length === 0) {
-				generatePaletteFromBase()
+			const savedPalette = localStorage.getItem('palette')
+			if (savedPalette) {
+				try {
+					const parsedPalette = JSON.parse(savedPalette)
+					if (
+						Array.isArray(parsedPalette) &&
+						parsedPalette.every(
+							item =>
+								typeof item === 'object' &&
+								item !== null &&
+								'hex' in item &&
+								'locked' in item
+						)
+					) {
+						palette.value = parsedPalette
+						numColors.value = parsedPalette.length // Adjust numColors based on loaded palette length
+						injectedSetPalette(palette.value) // Emit initial palette from localStorage
+					} else {
+						console.warn(
+							'Invalid palette data in localStorage. Generating a new palette.'
+						)
+						generatePaletteFromBase() // Use base generation with default baseColor
+					}
+				} catch (e) {
+					console.error('Error parsing saved palette from localStorage:', e)
+					generatePaletteFromBase() // Fallback to generating a new palette
+				}
+			} else {
+				generatePaletteFromBase() // Use base generation with default baseColor
 			}
 		})
 
@@ -611,7 +501,6 @@ export default {
 			notification,
 			baseColor,
 			paletteType,
-			paletteMood,
 			exportFormat, // Expose exportFormat
 			generateRandomPalette,
 			generatePaletteFromBase,
@@ -622,10 +511,9 @@ export default {
 			getContrastRatio,
 			getAccessibilityLevel,
 			getAccessibilityClass,
+			setPalette,
 			generatedExportCode, // Expose computed property
 			copyExportCode, // Expose copy function
-			sharePalette,
-			tinycolor,
 		}
 	},
 }
@@ -790,75 +678,34 @@ h2 {
 	text-align: center;
 }
 
-.preview-layout {
-	display: flex;
+.preview-content {
+	padding: 25px;
 	border-radius: 8px;
-	overflow: hidden;
-	background-color: var(--preview-bg);
-	min-height: 400px;
-	box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-}
-
-.preview-sidebar {
-	width: 200px;
-	padding: 20px;
+	min-height: 200px;
 	display: flex;
 	flex-direction: column;
-	gap: 30px;
+	align-items: flex-start;
+	gap: 15px;
+	transition: background-color 0.3s ease;
+	box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
 }
 
-.preview-sidebar-header {
-	display: flex;
-	align-items: center;
-	gap: 10px;
-	font-size: 1.2em;
-	font-weight: bold;
-}
-
-.preview-icon {
-	width: 24px;
-	height: 24px;
-}
-
-.preview-nav {
-	list-style: none;
-	padding: 0;
-	margin: 0;
-	display: flex;
-	flex-direction: column;
-	gap: 10px;
-}
-
-.preview-nav li {
-	display: flex;
-	align-items: center;
-	gap: 10px;
-	padding: 10px;
-	border-radius: 6px;
-	cursor: pointer;
-	transition: background-color 0.2s;
-}
-
-.preview-nav li:hover {
-	background-color: rgba(255, 255, 255, 0.1);
-}
-
-.preview-main {
-	flex: 1;
-	display: flex;
-	flex-direction: column;
-}
-
-.preview-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 20px;
-}
-
-.preview-header h2 {
-	margin: 0;
+.preview-content h4 {
 	font-size: 1.8em;
+	margin: 0;
+}
+
+.preview-content p {
+	font-size: 1em;
+	line-height: 1.6;
+	margin: 0;
+}
+
+.preview-card {
+	padding: 20px;
+	border-radius: 8px;
+	font-weight: bold;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .preview-button {
@@ -876,36 +723,6 @@ h2 {
 	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.preview-content-grid {
-	flex: 1;
-	padding: 20px;
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-	gap: 20px;
-}
-
-.preview-content-card {
-	padding: 20px;
-	border-radius: 8px;
-	border: 2px solid;
-}
-
-.preview-content-card h4 {
-	margin: 0 0 10px 0;
-}
-
-.preview-content-card p {
-	margin: 0 0 15px 0;
-	font-size: 1.5em;
-	font-weight: bold;
-}
-
-.preview-progress-bar {
-	height: 8px;
-	border-radius: 4px;
-	width: 70%;
-}
-
 .preview-controls {
 	margin-top: 20px;
 	display: flex;
@@ -914,6 +731,7 @@ h2 {
 }
 
 .preview-bg-button {
+	color: #111;
 	padding: 8px 15px;
 	border: 1px solid #ccc;
 	border-radius: 6px;
@@ -948,12 +766,7 @@ h2 {
 .notification-error {
 	background-color: #dc3545; /* Error color */
 }
-.analysis-container {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: 20px;
-	align-items: start;
-}
+
 /* New styles for Accessibility Section */
 .accessibility-section {
 	margin-top: 40px;
