@@ -5,7 +5,9 @@
 				<h1>ColorPalette</h1>
 			</div>
 			<nav class="main-nav">
-				<router-link to="/" class="nav-link">Генератор</router-link>
+				<router-link to="/control_work_5_vue" class="nav-link"
+					>Генератор</router-link
+				>
 				<router-link to="/library" class="nav-link"
 					>Библиотека палитр</router-link
 				>

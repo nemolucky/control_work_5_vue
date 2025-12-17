@@ -138,7 +138,7 @@ export default {
 			const paletteToLoad = savedPalettes.value.find(p => p.id === id)
 			if (paletteToLoad) {
 				setPalette(paletteToLoad.colors) // Use injected setPalette
-				router.push('/') // Navigate back to the generator
+				router.push('/control_work_5_vue') // Navigate back to the generator
 			}
 		}
 

@@ -1,23 +1,23 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import ColorPaletteGenerator from '../components/ColorPaletteGenerator.vue';
-import PaletteLibrary from '../components/PaletteLibrary.vue';
+import { createRouter, createWebHistory } from 'vue-router'
+import ColorPaletteGenerator from '../components/ColorPaletteGenerator.vue'
+import PaletteLibrary from '../components/PaletteLibrary.vue'
 
 const routes = [
-  {
-    path: '/',
-    name: 'ColorPaletteGenerator',
-    component: ColorPaletteGenerator,
-  },
-  {
-    path: '/library',
-    name: 'PaletteLibrary',
-    component: PaletteLibrary,
-  },
-];
+	{
+		path: '/control_work_5_vue',
+		name: 'ColorPaletteGenerator',
+		component: ColorPaletteGenerator,
+	},
+	{
+		path: '/library',
+		name: 'PaletteLibrary',
+		component: PaletteLibrary,
+	},
+]
 
 const router = createRouter({
-  history: createWebHistory(),
-  routes,
-});
+	history: createWebHistory(),
+	routes,
+})
 
-export default router;
+export default router
