@@ -1,27 +1,6 @@
 <template>
 	<div class="palette-library">
 		<h3>Библиотека сохраненных палитр</h3>
-		<div class="save-current-palette">
-			<input
-				type="text"
-				v-model="newPaletteName"
-				placeholder="Название палитры"
-				class="palette-name-input"
-			/>
-			<input
-				type="text"
-				v-model="newPaletteTags"
-				placeholder="Тэги (через запятую)"
-				class="palette-tags-input"
-			/>
-			<button
-				@click="saveCurrentPalette"
-				:disabled="!newPaletteName.trim()"
-				class="save-button"
-			>
-				Сохранить текущую палитру
-			</button>
-		</div>
 
 		<div class="library-controls">
 			<input
@@ -128,8 +107,6 @@ export default {
 	name: 'PaletteLibrary',
 	setup() {
 		const savedPalettes = ref([])
-		const newPaletteName = ref('')
-		const newPaletteTags = ref('')
 		const searchTerm = ref('')
 		const filterByFavorite = ref(false)
 
@@ -138,7 +115,6 @@ export default {
 		const router = useRouter() // Access the router instance
 
 		// Inject provided values
-		const currentPalette = inject('currentPalette')
 		const setPalette = inject('setPalette')
 
 		// Load palettes from localStorage on mount
@@ -157,26 +133,6 @@ export default {
 			},
 			{ deep: true }
 		)
-
-		const saveCurrentPalette = () => {
-			if (!newPaletteName.value.trim()) return
-
-			const tagsArray = newPaletteTags.value
-				.split(',')
-				.map(tag => tag.trim())
-				.filter(tag => tag.length > 0)
-
-			const newPalette = {
-				id: Date.now(), // Simple unique ID
-				name: newPaletteName.value.trim(),
-				tags: tagsArray,
-				colors: currentPalette.value, // Use injected currentPalette
-				favorite: false,
-			}
-			savedPalettes.value.push(newPalette)
-			newPaletteName.value = ''
-			newPaletteTags.value = ''
-		}
 
 		const loadPalette = id => {
 			const paletteToLoad = savedPalettes.value.find(p => p.id === id)
@@ -247,12 +203,9 @@ export default {
 
 		return {
 			savedPalettes,
-			newPaletteName,
-			newPaletteTags,
 			searchTerm,
 			filterByFavorite,
 			editingPalette,
-			saveCurrentPalette,
 			loadPalette,
 			deletePalette,
 			toggleFavorite,
